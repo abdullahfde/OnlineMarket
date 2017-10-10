@@ -1,0 +1,152 @@
+{% load static %}
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta charset="UTF-8">
+      <style>
+.entTXT{
+{#    position: absolute;#}
+    bottom:0px;
+    width: 100%;
+    height:70px;
+    padding: 12px 12px;
+    margin: 18px 0;
+    display: block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+</style>
+      <style>
+.send{
+    float: right;
+    font-size: 12px;
+    font-weight:bold;
+    width: 25%;
+    height:15px;
+    background-color: deepskyblue;
+    color: white;
+    padding: 25px 15px;
+    margin: 4px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+      </style>
+
+        <style>
+      .people
+            {
+                   left:0;
+                   right:0;
+                   top:60px;
+                   padding:2px;
+                 height: 500px;
+                overflow-y: scroll;
+                overflow-x: hidden;
+            }
+      </style>
+      <style>
+      .right
+
+            {    left:0;
+               right:0;
+
+               padding:20px;
+                 height: 450px;
+                overflow-y: scroll;
+                overflow-x: hidden;
+            }
+      </style>
+    <title>Messaging Center</title>
+
+
+    <link rel="stylesheet" href="{% static "inbox/css/reset.css" %}">
+
+        <link rel="stylesheet" href="{% static "inbox/css/style.css" %}">
+              <link rel="stylesheet" href={% static "inbox/scss/style.scss"%}"">
+
+  </head>
+
+  <body>
+
+    <div class="wrapper">
+    <div class="container">
+        <div id ="left" class="left">
+            <div class="top">
+                <center>Messaging Center</center>
+{#                <img src="XL" alt=""/>#}
+            </div>
+            <ul id="people" class="people">
+            </ul>
+        </div>
+        <div id ="right" class="right">
+        </div>
+    </div>
+</div>
+
+    <script src="{% static 'inbox/js/test.js'%}"></script>
+
+    <script src="{% static "inbox/js/index.js"%}"></script>
+    <script>
+         function messlist() {
+                info= {{allItems0 |safe}};
+                appendToInnerHtml=[];
+             for (i = 0; i<info.length; i += 1) {
+
+                 appendToInnerHtml[i]=
+                         '<li name='+i+' class="person" data-chat= person'+i+' onclick="messages('+i+')">'+
+
+
+                        '<span class="name">'+info[i][2]+'</span>'+
+                        '<br>'+
+                        '<span class="preview">'+info[i][1]+'</span>' +
+
+                         '</li>';
+
+             }
+             document.getElementById("people").innerHTML = appendToInnerHtml.join("");
+
+         }
+         messlist();
+                function messages(i) {
+                    info0= {{messages0 |safe}};
+
+                    mess =[];
+                    for (j = 0; j<info0[i].length; j += 1) {
+                        mess[j]='<div id=person'+i+' class=person'+i+'><br>'+'<div class="conversation-start">'+
+                                '<span>'+info0[i][j][0]+'<br>'+info0[i][j][1].split(':')[0]+':'+info0[i][j][1].split(':')[1]+'</span>'+
+                            '</div>'+
+                            '<div class="bubble you">'+
+                                info0[i][j][2]+
+                           '</div>'+'<br>'+'<br></div>';
+                    }
+                         document.getElementById("right").innerHTML =mess.join("")+
+                           '<div id="reply" > <input class= "entTXT" type="text" id='+i+' name="reply" placeholder="Your message..">'+
+                            '<input class="send" type="submit" value="Send" onclick="send('+i+')"/></div>';
+
+
+
+                }
+            messages(0);
+
+         function send(x) {
+             var reply = document.getElementById(x).value;
+             var element = document.createElement("div");
+             element.className = 'bubble you';
+             element.appendChild(document.createTextNode(
+                                reply
+                          ));
+             document.getElementById('person'+x).appendChild(element);
+             document.getElementById(x).value=''
+        }
+
+
+
+    </script>
+
+
+
+
+  </body>
+</html>
